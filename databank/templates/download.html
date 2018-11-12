@@ -1,0 +1,51 @@
+{% extends "base_generic.html" %}
+
+{% block sidebar %}
+<div class="grid-container">
+    <div class="item1">Téradat infrastruktúra</div>
+    <div class="item3">Adattípus:
+        <div>soon..</div>
+    </div>
+    <div class="item5">
+            <table id="coordTable">
+                <tr>
+                    <th>A kért fájl(ok):</th>
+                </tr>
+                <!-- JAVÍTÁS-->
+                <tr id="coordRow1">
+                    
+                    <td id="fileName">
+
+                    {% for path in outPath %}
+                        
+                    {% load static %}
+                        <!--Use STATIC_URL instead!!-->
+                        <a href="{% get_static_prefix %}{{path}}" download="{{footprints.name}}">{{path}}</a><!--databank/topo/Csongrad/27-314.jpg-->
+
+                    {% endfor %}
+
+                    </td>
+                </tr>
+                <!-- 
+                <tr id="coordRow5">
+                    <td></td>
+                    <td></td>
+                    <td><button onclick="clearTable()">Elvetés</button></td>
+                </tr>
+                -->
+            </table>
+    </div>
+    <!--
+    <div class="item?">
+        A kért fájl(ok):
+        <p>{{ outPath }}</p>
+    </div>
+    
+    
+    {% load static %}
+    <div class="item6"><a href="{% static 'databank/topo/Csongrad/27-314.jpg' %}" download="logo"><button>Letöltés</button></a></div>
+    
+    <a href="/images/polygon.png" download="logo"><p>Download</p></a>
+    -->
+  </div>
+  {% endblock %}

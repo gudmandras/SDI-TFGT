@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--Webpage for SDI of SZTE TTIK TFGT -->
+<!--Created by Levente Csőke(@tardigre) and András Gudmann(@gudmandras)-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block title %}<title>SZTE TTIK TFGT Téradat Szerver</title>{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="main.css" />--!>
+    <!--basic declarations-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin=""/>    
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+    <!--leaflet .css and .js import from webhost-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--jquerry import from webhost -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <!-- boostrap -->
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+    <!-- font awesome for icons-->
+    
+    {% load static %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'databank/css/main.css' %}" />
+
+    <!--main.css import -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" id="myHeader"><!--Header division-->
+            <div class="col-auto">
+                <!--Load iamge dynamically-->
+                {% load static %}
+                <img id="logo" src="{% static 'databank/images/logoSimple.png' %}" alt="Logó">
+            </div>
+        </div>
+        
+        <div class="row" id="mainContent">
+            <div class="col-3" ><!--SideBar division -->
+                <!--Populating sidebar -->
+                {% block sidebar %}
+               
+                {% endblock %}
+                {% if user.is_authenticated %}
+                <li>User: {{ user.get_username }}</li>
+                    <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
+                {% else %}
+                    <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
+                {% endif %} 
+            </div>
+            
+            <div class="col-9" >
+                <div id="myMap"></div><!--myMap division-->
+            </div>
+        </div>
+        
+    </div>
+
+    {% load static %}
+    <script src="{% static 'databank/js/main.js' %}"></script>
+    <!--main.js file import -->    
+
+</body>
+</html>

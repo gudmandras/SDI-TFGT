@@ -1,0 +1,101 @@
+{% extends "base_generic.html" %}
+
+{% block sidebar %}
+<div class="grid-container">
+    <div class="item1">Téradat infrastruktúra</div>
+    <div class="item3">Adattípus:
+        <select>
+            <option>Válassz adattípust!</option>
+            <option value="topo">Topográfiai térkép</option>    
+        </select>
+    </div>                     
+    <div class="item5">
+            <table id="coordTable">
+                <tr>
+                    <th>Koordináták</th>
+                    <th>Szerk.</th>
+                    <th>Töröl</th>
+                </tr>
+                <tr id="coordRow1">
+                    <td id="crd1"></td>
+                    <td id="edt1"></td>
+                    <td id="dlt1"></td>
+                </tr>
+                <tr id="coordRow2">
+                    <td id="crd2"></td>
+                    <td id="edt2"></td>
+                    <td id="dlt2"></td>
+                </tr>
+                <tr id="coordRow3">
+                    <td id="crd3"></td>
+                    <td id="edt3"></td>
+                    <td id="dlt3"></td>
+                </tr>
+                <tr id="coordRow4">
+                    <td id="crd4"></td>
+                    <td id="edt4"></td>
+                    <td id="dlt4"></td>
+                </tr>
+                <tr id="coordRow5">
+                    <td></td>
+                    <td></td>
+                    <td><button onclick="clearTable()">Elvetés</button></td>
+                </tr>
+            </table>
+    </div>
+    
+    <div class="item6">Idősáv:
+        <select>
+            <option>-től</option>
+            <option value="f00">2000</option>
+            <option value="f01">2001</option>
+            <option value="f02">2002</option>
+            <option value="f03">2003</option>
+            <option value="f04">2004</option>
+            <option value="f05">2005</option>
+            <option value="f06">2006</option>
+            <option value="f07">2007</option>
+            <option value="f08">2008</option>
+            <option value="f09">2009</option>
+            <option value="f10">2010</option>
+            <option value="f11">2011</option>
+            <option value="f12">2012</option>
+            <option value="f13">2013</option>
+            <option value="f14">2014</option>
+            <option value="f15">2015</option>
+            <option value="f16">2016</option>
+            <option value="f17">2017</option>    
+        </select>
+        <select>
+            <option>-ig</option>
+            <option value="t00">2000</option>
+            <option value="t01">2001</option>
+            <option value="t02">2002</option>
+            <option value="t03">2003</option>
+            <option value="t04">2004</option>
+            <option value="t05">2005</option>
+            <option value="t06">2006</option>
+            <option value="t07">2007</option>
+            <option value="t08">2008</option>
+            <option value="t09">2009</option>
+            <option value="t10">2010</option>
+            <option value="t11">2011</option>
+            <option value="t12">2012</option>
+            <option value="t13">2013</option>
+            <option value="t14">2014</option>
+            <option value="t15">2015</option>
+            <option value="t16">2016</option>
+            <option value="t17">2017</option>
+            <option value="t18">2018</option>    
+        </select>
+    </div>
+
+    <!--
+        BUGGOS az URL redirect.
+    -->
+    <div class="item7"><button href="{% url 'download' %}" onclick="postData()">Tovább</button></div>
+    <!--
+    <a href="/images/polygon.png" download="logo"><p>Download</p></a>
+    -->
+  </div>
+  {% endblock %}
