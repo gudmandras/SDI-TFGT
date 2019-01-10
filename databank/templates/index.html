@@ -89,12 +89,18 @@
             <option value="t18">2018</option>    
         </select>
     </div>
+{#    <p>{{ bounding_box }}</p>#}
 
     <!--
         BUGGOS az URL redirect.
+
     -->
-    <div class="item7"><button href="{% url 'download' %}" onclick="postData()">Tovább</button></div>
+    <div class="item7"><button onclick="postData()">Tovább</button></div>
+
+
     <!--
+        <div class="item7"><form action={% url 'download' %} method='GET'><button onclick="postData()">Tovább</button></form></div>
+
     <a href="/images/polygon.png" download="logo"><p>Download</p></a>
     -->
   </div>
