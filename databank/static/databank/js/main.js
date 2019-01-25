@@ -292,6 +292,10 @@ function postData(){
     return true;
 }
 
+function redirect(){
+    window.location.replace('http://datapc/databank/download');
+}
+
 //Known bugs.
 /**
 * A rajz gombra kattintva(kikapcsolás) kiürülnek az array-ek, 
