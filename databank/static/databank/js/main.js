@@ -1,5 +1,4 @@
-﻿
-//Created by Levente Csőke(@tardigre) and András Gudmann(@gudmandras)
+﻿//Created by Levente Csőke(@tardigre) and András Gudmann(@gudmandras)
 
 //Js part for whole webpage.
 //Content sizing to browser size.
@@ -36,6 +35,7 @@ var Esri_WorldShadedRelief = L.tileLayer('https://server.arcgisonline.com/ArcGIS
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri',
 	maxZoom: 13
 });
+
 var baseLayers = {
     "Topography": Esri_WorldTopoMap,
     "Satellite": Esri_WorldImagery,
@@ -67,7 +67,11 @@ var polygonButton = L.Control.extend({
 	}
 });
 
-mymap.addControl(new polygonButton());
+var path = window.location.pathname;
+
+if(path != "/databank/download/"){
+    mymap.addControl(new polygonButton());
+}
 
 //Js part for bounding box generate.
 
