@@ -45,7 +45,7 @@ var baseLayers = {
 //Define map.
 var mymap = L.map('myMap',{
     center:[46.252483,20.148284],
-    zoom: 10,
+    zoom: 13,
     layers:[Esri_WorldTopoMap]
 });
 L.control.layers(baseLayers).addTo(mymap);
