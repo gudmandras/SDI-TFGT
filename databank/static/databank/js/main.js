@@ -293,7 +293,11 @@ function postData(){
 }
 
 function redirect(){
-    window.location.replace('http://datapc/databank/download');
+    window.location.replace('/databank/download');
+}
+
+function indexing(){
+    window.location.replace('../');
 }
 
 //Known bugs.
