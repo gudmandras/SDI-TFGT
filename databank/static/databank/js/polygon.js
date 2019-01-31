@@ -107,7 +107,7 @@ function polygonMaker(number){
     };
 
 //Poulating the table on the sidebar.
-/*function populateTable(number){
+function populateTable(number){
 
     var edit = '<button id="editButton'+number+'" onclick="edit()"><i class="fas fa-edit"></i></button>';
     var dlt = '<button id="deleteButton'+number+'" onclick="delet()"><i class="fa fa-trash"></i></button>';
@@ -132,15 +132,15 @@ function polygonMaker(number){
         
     }
 }
-function edit(){
+/*function edit(){
 
 }
 function delet(){
 
-}
-*/
+}*/
+
 //Clicking on the "Elvetés" button clears the table on the sidebar and sets all variable to default.
-/*function clearTable(){
+function clearTable(){
     document.getElementById("crd1").innerHTML = "";
     document.getElementById("edt1").innerHTML = "";
     document.getElementById("dlt1").innerHTML = "";
@@ -153,13 +153,13 @@ function delet(){
     document.getElementById("crd4").innerHTML = "";
     document.getElementById("edt4").innerHTML = "";
     document.getElementById("dlt4").innerHTML = "";
-    disabler();
+    cleaner();
 }
-*/
+
 
 //Disabling the feature creating and delete every feature on the map, set all variables to default.
 function disabler(){
-        markersLayer.clearLayers();
+        /*markersLayer.clearLayers();
         mymap.removeLayer(markersLayer);
 //        mymap.removeLayer(polylineLayer);
         mymap.removeLayer(polygonLayer);
@@ -169,8 +169,21 @@ function disabler(){
         teglalap = [];
         coordinates = [];
         boundingBox.X = [];
-        boundingBox.Y = [];
+        boundingBox.Y = [];*/
         mymap.off("click",boundingBoxer());
+}
+
+function cleaner(){
+    markersLayer.clearLayers();
+    mymap.removeLayer(markersLayer);
+    mymap.removeLayer(polygonLayer);
+    $('.leaflet-interactive').remove();
+    szamlalo = 0;
+    vonal = [];
+    teglalap = [];
+    coordinates = [];
+    boundingBox.X = [];
+    boundingBox.Y = [];
 }
 
 function postData(){
@@ -191,4 +204,16 @@ function postData(){
     });  
 
     return true;
+}
+
+$("#trash").hover(function(){
+    bool = true;
+    $("#trash").click(function(e){
+        clearTable();
+    });
+    retrue();
+});
+
+function retrue(){
+    judge = true;
 }

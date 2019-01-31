@@ -43,10 +43,28 @@ var polygonButton = L.Control.extend({
 	}
 });
 
+var deleteButton = L.Control.extend({
+	options:{
+		position: 'topleft'
+	},
+	onAdd: function(mymap){
+		var container = L.DomUtil.create('trash');
+        container.id = "trash";
+		container.style.backgroundColor = 'white';
+		container.style.backgroundImage = "url(https://cdn3.iconfinder.com/data/icons/cleaning-icons/512/Trash_Can-512.png)";
+		container.style.backgroundSize = '100% 100%';
+		container.style.width = '30px';
+		container.style.height = '30px';
+		return container;
+	} 
+});
+
+
 // get the path name from browser
 var path = window.location.pathname;
 
 // if the path is not pointing to download, the polygon button and with that the polygon drawing is possible 
 if(path != "/databank/download/"){
-    mymap.addControl(new polygonButton());
+	mymap.addControl(new polygonButton());
+	mymap.addControl(new deleteButton());
 }

@@ -23,12 +23,13 @@ $(window).resize(function(){
     $('#mainContent').css('height',(browserHeight*0.775));
 });
 
-function redirect(){
-    window.location.replace('/databank/download');
-}
-
-function indexing(){
-    window.location.replace('/databank/');
+function redirect(a){
+    if(a == 1){
+        window.location.replace('/databank/download');
+    }
+    if(a == 2){
+        window.location.replace('/databank/');
+    }
 }
 
 
