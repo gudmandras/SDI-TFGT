@@ -68,7 +68,7 @@ function boundingBoxer(){
                 markerMaker(szamlalo);
                 //lineMaker(szamlalo);
                 polygonMaker(szamlalo);
-                populateTable(szamlalo);
+                //populateTable(szamlalo);
                 szamlalo++;
                 
 				//For debugging.
@@ -95,7 +95,7 @@ function markerMaker(number){
 //Adding a poligon if there is at least 3 markers.
 function polygonMaker(number){
     if(number>2){
-        mymap.removeLayer(polylineLayer);
+        //mymap.removeLayer(polylineLayer);
         mymap.removeLayer(polygonLayer);
         teglalap = [];
     };
@@ -107,7 +107,7 @@ function polygonMaker(number){
     };
 
 //Poulating the table on the sidebar.
-function populateTable(number){
+/*function populateTable(number){
 
     var edit = '<button id="editButton'+number+'" onclick="edit()"><i class="fas fa-edit"></i></button>';
     var dlt = '<button id="deleteButton'+number+'" onclick="delet()"><i class="fa fa-trash"></i></button>';
@@ -131,7 +131,7 @@ function populateTable(number){
     }else{
         
     }
-}
+}*/
 /*function edit(){
 
 }
@@ -140,7 +140,7 @@ function delet(){
 }*/
 
 //Clicking on the "Elvetés" button clears the table on the sidebar and sets all variable to default.
-function clearTable(){
+/*function clearTable(){
     document.getElementById("crd1").innerHTML = "";
     document.getElementById("edt1").innerHTML = "";
     document.getElementById("dlt1").innerHTML = "";
@@ -154,7 +154,7 @@ function clearTable(){
     document.getElementById("edt4").innerHTML = "";
     document.getElementById("dlt4").innerHTML = "";
     cleaner();
-}
+}*/
 
 
 //Disabling the feature creating and delete every feature on the map, set all variables to default.
@@ -191,13 +191,15 @@ function postData(){
 	var maxX = Math.max(...boundingBox.X);
 	var minX = Math.min(...boundingBox.X);
 	var maxY = Math.max(...boundingBox.Y);
-	var minY = Math.min(...boundingBox.Y);
+    var minY = Math.min(...boundingBox.Y);
+    var fileType = document.getElementById("type").value;
+    alert("NYAAAAAAAAAAAAAA")
 	
 	//AJAX request to getdata view with the four coorinates.
 	$.ajax({
 		url: "getdata/",
 		type: "GET",
-		data: {'max_x': maxX , 'min_x' : minX, 'max_y': maxY , 'min_y' : minY},
+		data: {'max_x': maxX , 'min_x' : minX, 'max_y': maxY , 'min_y' : minY , 'fileType': fileType},
 		success: function(){
 			console.log("Success!");
 		}
@@ -209,7 +211,7 @@ function postData(){
 $("#trash").hover(function(){
     bool = true;
     $("#trash").click(function(e){
-        clearTable();
+        cleaner();
     });
     retrue();
 });

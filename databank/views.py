@@ -2,30 +2,23 @@ from django.shortcuts import render
 from django.views import generic
 
 # Create your views here.
-from .models import Query, Footprints
-from django.shortcuts import render, get_object_or_404, redirect, HttpResponse, render_to_response, HttpResponseRedirect
-
-from django.contrib.auth import authenticate, login
-
+from .models import Position, footprints
 
 def index(request):
     """
     View function for home page (index.html) of site. 
     """
     # Generate counts of the main obejcts (rows) in Position table/model
-    #bounding_box = Query.objects.all()
-    bounding_box = Query.objects.last()
-
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
-
+    bounding_box = Position.objects.all()
+    #num_visits=request.session.get('num_visits', 0)
+    #request.session['num_visits'] = num_visits+1
+       
     # Render the HTML template index.html with the data in the context variable
     return render(
         request,
         'index.html',
-        context={'bounding_box': bounding_box},
+        context={'bounding_box':bounding_box},
     )
-
 
 def download(request):
     """
@@ -54,85 +47,52 @@ def download(request):
 
     """
 
-    last_query = Query.objects.last()
-    extents = {
-        'max_x': last_query.max_x,
-        'min_x': last_query.min_x,
-        'max_y': last_query.max_y,
-        'min_y': last_query.min_y,
-    }
+    outPath = footprints.judger()
 
     # Render the HTML template download.html.
-
     return render(
         request,
-        'output.html',
-        context=extents,
-    )
+        'download.html',
+        context={'outPath':outPath},
+    )    
 
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse, render_to_response, HttpResponseRedirect
+#from django.core.urlresolvers import reverse
 
-# import json
+from django.contrib.auth import authenticate, login
+#import json
 
 def getdata(request):
+    print('beleleptem', request.method)
 
     """
-    View function that gets the input data from the bounding box via a GET request,
+    View function that gets the input data from the bounding box via a GET request, 
     and immideately inserts it in the table, with the username.
-    """
+    """    
     if request.user.is_authenticated:
         username = request.user.username
-
-    # If the request is GET, get the values from the front-end, and insert it in the Position table as a new row.
+    
+    #If the request is GET, get the values from the front-end, and insert it in the Position table as a new row.
     if request.method == 'GET':
-        try:
-            maxX = request.GET['max_x']
-            minX = request.GET['min_x']
-            maxY = request.GET['max_y']
-            minY = request.GET['min_y']
-            extents = {
-                'max_x': maxX,
-                'min_x': minX,
-                'max_y': maxY,
-                'min_y': minY,
-            }
+        maxX = request.GET['max_x']
+        minX = request.GET['min_x']
+        maxY = request.GET['max_y']
+        minY = request.GET['min_y']
+        fileType = request.GET['fileType']
+        res1 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % maxX
+        res2 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % minX
+        res3 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % maxY
+        res4 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % minY
 
-            query = Query(max_x=maxX, min_x=minX, max_y=maxY, min_y=minY, username=username)
-            query.save()
-            return HttpResponse(extents)
-        except Exception as e:
-            print(e)
+        print('fileeeeee',fileType)
+        insert_data = Position(max_x = maxX, min_x = minX, max_y = maxY, min_y = minY, filetype = fileType, username = username)
+        insert_data.save()
+
+        return HttpResponse(res1 + res2 + res3 + res4)
     else:
         return HttpResponse("Request method is not a GET")
-    # res1 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % maxX
-    # res2 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % minX
-    # res3 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % maxY
-    # res4 = "<html><b> you sent a get request </b> <br> returned data: %s</html>" % minY
 
-def printdata(request):
-    """
-    figyu,
-    elküldöd az extenteket a kliensről,
-    megkapod itt,
-    lekérdezed az adatbázist,
-    és rendereled a kimenő download paget a downlaod htmlből és a kapott query eredmény fájl elérési utakkal
-    """
-    extents = Query.objects.last()
-
-    """
-    View function that gets the input data from the bounding box via a GET request,
-    and immideately inserts it in the table, with the username.
-    """
-    return render(
-        request,
-        'output.html',
-        context=extents,
-    )
-
-
-#
-#
-# # Output html for developer purposes.
-# class QueryList(generic.ListView):
-#     model = Query
-#     # template_name = '*.html'
-
+#Output html for developer purposes.    
+class PositionList(generic.ListView):
+    model = Position
+    #template_name = '*.html'

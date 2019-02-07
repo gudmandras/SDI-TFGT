@@ -12,6 +12,7 @@ class Position(models.Model):
     min_x = models.DecimalField('Min X', max_digits=6, decimal_places=4, default=0, help_text="Min X coordinate")
     max_y = models.DecimalField('Max Y', max_digits=6, decimal_places=4, default=0, help_text="Max Y coordinate")
     min_y = models.DecimalField('Min Y', max_digits=6, decimal_places=4, default=0, help_text="Min Y coordinate")
+    filetype = models.CharField(max_length= 50, default="nincs")
     username = models.CharField(max_length=50, default="guest")
 
     def get_absolute_url(self):
@@ -24,12 +25,12 @@ class Position(models.Model):
         """
         String for representing the Model object.
         """
-        return '{0}, {1}, {2}, {3}, {4}'.format(self.id, self.max_x, self.min_x, self.max_y, self.min_y)
+        return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.max_x, self.min_x, self.max_y, self.min_y, self.filetype) 
 
     def lastInput():
         from django.db import connection
         with connection.cursor() as cursor:
-            cursor.execute('SELECT id, min_y, min_x, max_y, max_x, username FROM databank_position WHERE id=( SELECT max(id) FROM databank_position)')
+            cursor.execute('SELECT id, min_y, min_x, max_y, max_x, filetype, username FROM databank_position WHERE id=( SELECT max(id) FROM databank_position)')
             tup = cursor.fetchone()
             return tup
 
@@ -45,7 +46,6 @@ class footprints(models.Model):
 
     def judger():
         extent = Position.lastInput()
-
         from django.db import connection
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM footprints')
@@ -56,14 +56,15 @@ class footprints(models.Model):
                 yMax = row[3]
                 xMax = row[4]
                 path = row[5]
-                if((xMin >= extent[2] and yMin >= extent[1] and xMax <= extent[4] and yMax <= extent[3]) or (xMin >= extent[2] and xMin <= extent[4] and yMin >= extent[1] and yMin <= extent[3]) or (xMin >= extent[2] and xMin <= extent[4] and yMax >= extent[1] and yMax <= extent[3]) or (xMax >= extent[2] and xMax <= extent[4] and yMax >= extent[1] and yMax <= extent[3]) or (xMax >= extent[2] and xMax <= extent[4] and yMin >= extent[1] and yMin <= extent[3])):
-                    result_list.append(path)
-                    rawFile = path[:-4]
-                    jgwFiles = rawFile + ".jgw"
-                    result_list.append(jgwFiles)
+                if(extent[5] == "topo"):
+                    if((xMin >= extent[2] and yMin >= extent[1] and xMax <= extent[4] and yMax <= extent[3]) or (xMin >= extent[2] and xMin <= extent[4] and yMin >= extent[1] and yMin <= extent[3]) or (xMin >= extent[2] and xMin <= extent[4] and yMax >= extent[1] and yMax <= extent[3]) or (xMax >= extent[2] and xMax <= extent[4] and yMax >= extent[1] and yMax <= extent[3]) or (xMax >= extent[2] and xMax <= extent[4] and yMin >= extent[1] and yMin <= extent[3])):
+                        result_list.append(path)
+                        rawFile = path[:-4]
+                        jgwFiles = rawFile + ".jgw"
+                        result_list.append(jgwFiles)
             return result_list
             #return extent[0:6]
-
+        
     def __str__(self):
         """
         String for representing the Model object.

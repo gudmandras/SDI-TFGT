@@ -4,12 +4,12 @@
 <div class="grid-container">
     <div class="item1">Téradat infrastruktúra</div>
     <div class="item3">Adattípus:
-        <select>
+        <select id="type">
             <option>Válassz adattípust!</option>
             <option value="topo">Topográfiai térkép</option>    
         </select>
     </div>                     
-    <div class="item5">
+<!--    <div class="item5">
             <table id="coordTable">
                 <tr>
                     <th>Koordináták</th>
@@ -42,8 +42,8 @@
                     <td><button onclick="clearTable()">Elvetés</button></td>
                 </tr>
             </table>
-    </div>
-    
+    </div> 
+    -->
     <div class="item6">Idősáv:
         <select>
             <option>-től</option>
@@ -93,7 +93,7 @@
     <!--
         BUGGOS az URL redirect.
     -->
-    <div class="item7"><button href="{% url 'download' %}" onclick="postData(); redirect()">Tovább</button></div>
+    <div class="item7"><button href="{% url 'download' %}" onclick="postData(); redirect(1)">Tovább</button></div>
     <!--
     <a href="/images/polygon.png" download="logo"><p>Download</p></a>
     -->

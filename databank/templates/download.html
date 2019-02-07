@@ -17,11 +17,10 @@
                     <td id="fileName">
 
                     {% for path in outPath %}
-                        
+
                     {% load static %}
                         <!--Use STATIC_URL instead!!-->
                         <a href="{% get_static_prefix %}{{path}}" download="{{footprints.name}}">{{path}}</a><!--databank/topo/Csongrad/27-314.jpg-->
-
                     {% endfor %}
 
                     </td>

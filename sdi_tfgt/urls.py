@@ -34,12 +34,11 @@ urlpatterns += [
 
 #We define the databank/ pattern as the main site.
 urlpatterns += [
-    path('', RedirectView.as_view(url='databank')),
+    path('', RedirectView.as_view(url='/databank/')),
 ]
 
 #We define the root of the static and media files if DEBUG is true.
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
 #urlpatterns += static('',(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}))
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
