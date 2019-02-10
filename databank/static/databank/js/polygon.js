@@ -213,7 +213,7 @@ function postData(){
             'file_type': fileType},
 		success: function(){
 			console.log("Success!");
-            //redirect(1);
+            redirect(1);
 		}
     });  
 

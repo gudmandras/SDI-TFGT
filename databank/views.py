@@ -54,21 +54,23 @@ def getdata(request):
             'data_type': file_type
         }
 
+
         footprint = footprints()
         result_list = footprint.get_files(extent)
         print('sasddasdas',result_list)
+        request.session['res'] = result_list
 
         # redirect = HttpResponseRedirect(reverse('paths:result_list'))
         # redirect['Location'] += '&'.join(['students={}'.format(x) for x in result_list])
         # return redirect
 
-        #return redirect('../download/')
+        return redirect('../download/')
 
-        return render(
-            request,
-            'download.html',
-            context={'outPath':result_list},
-        )
+        # return render(
+        #     request,
+        #     'download.html',
+        #     context={'outPath':result_list},
+        # )
     else:
         return HttpResponse('<h1>Page not found</h1>')
 
@@ -76,12 +78,12 @@ def getdata(request):
 
 
 def download(request):
-    print('beleleptem getdata', result_list)
-    req = request.GET['result_list']
+    req = request.session['res']
+    print('beleleptem getdata', req)
     return render(
         request,
         'download.html',
-        context={'outPath':result_list},
+        context={'outPath':req},
     )
 
 

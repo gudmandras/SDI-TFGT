@@ -2,38 +2,6 @@ from django.db import models
 from django.urls import reverse
 
 
-# Create your models here.
-
-# class Position(models.Model):
-#     """
-#     Model representing the max and min coordinates of the bounding box and the username of the User.
-#     """
-#
-#     max_x = models.DecimalField('Max X', max_digits=6, decimal_places=4, default=0, help_text="Max X coordinate")
-#     min_x = models.DecimalField('Min X', max_digits=6, decimal_places=4, default=0, help_text="Min X coordinate")
-#     max_y = models.DecimalField('Max Y', max_digits=6, decimal_places=4, default=0, help_text="Max Y coordinate")
-#     min_y = models.DecimalField('Min Y', max_digits=6, decimal_places=4, default=0, help_text="Min Y coordinate")
-#     filetype = models.CharField(max_length= 50, default="nincs")
-#     username = models.CharField(max_length=50, default="guest")
-#
-#     def get_absolute_url(self):
-#         """
-#         Returns the url to access a particular coordinate instance.
-#         """
-#         return reverse('position-detail', args=[str(self.id)])
-#
-#     def __str__(self):
-#         """
-#         String for representing the Model object.
-#         """
-#         return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.max_x, self.min_x, self.max_y, self.min_y, self.filetype)
-#
-#     def lastInput():
-#         from django.db import connection
-#         with connection.cursor() as cursor:
-#             cursor.execute('SELECT id, min_y, min_x, max_y, max_x, filetype, username FROM databank_position WHERE id=( SELECT max(id) FROM databank_position)')
-#             tup = cursor.fetchone()
-#             return tup
 
 
 class footprints(models.Model):
@@ -91,3 +59,35 @@ def __str__(self):
                 or (xMax[szam] >= Position.min_x and xMax[szam] <= Position.max_x and yMax[szam] >= Position.min_y and yMax[szam] <= Position.max_y) 
                 or (xMax[szam] >= Position.min_x and xMax[szam] <= Position.max_x and yMin[szam] >= Position.min_y and yMin[szam] <= Position.max_y)):
 """
+# Create your models here.
+
+# class Position(models.Model):
+#     """
+#     Model representing the max and min coordinates of the bounding box and the username of the User.
+#     """
+#
+#     max_x = models.DecimalField('Max X', max_digits=6, decimal_places=4, default=0, help_text="Max X coordinate")
+#     min_x = models.DecimalField('Min X', max_digits=6, decimal_places=4, default=0, help_text="Min X coordinate")
+#     max_y = models.DecimalField('Max Y', max_digits=6, decimal_places=4, default=0, help_text="Max Y coordinate")
+#     min_y = models.DecimalField('Min Y', max_digits=6, decimal_places=4, default=0, help_text="Min Y coordinate")
+#     filetype = models.CharField(max_length= 50, default="nincs")
+#     username = models.CharField(max_length=50, default="guest")
+#
+#     def get_absolute_url(self):
+#         """
+#         Returns the url to access a particular coordinate instance.
+#         """
+#         return reverse('position-detail', args=[str(self.id)])
+#
+#     def __str__(self):
+#         """
+#         String for representing the Model object.
+#         """
+#         return '{0}, {1}, {2}, {3}, {4}, {5}'.format(self.id, self.max_x, self.min_x, self.max_y, self.min_y, self.filetype)
+#
+#     def lastInput():
+#         from django.db import connection
+#         with connection.cursor() as cursor:
+#             cursor.execute('SELECT id, min_y, min_x, max_y, max_x, filetype, username FROM databank_position WHERE id=( SELECT max(id) FROM databank_position)')
+#             tup = cursor.fetchone()
+#             return tup
