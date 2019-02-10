@@ -64,7 +64,8 @@ def getdata(request):
         # redirect['Location'] += '&'.join(['students={}'.format(x) for x in result_list])
         # return redirect
 
-        return redirect('../download/')
+        # return redirect('../download/')
+        return HttpResponse(result_list)
 
         # return render(
         #     request,

@@ -1,0 +1,11 @@
+dokumentáció
+show polygon on /download page as well and maybe focus on the selected area + layers
+error-handling
+egy .bat script ami autmatikusan telepíti a condát, csinál egy virtual env-et, és telepít minden dependenciát meg configurál
+postgis lekérés
+login is working, reset password is not working preoperly
+drawing button fix
+first click should make a point
+more than 4 points possible
+single file download or batch download in zipped file
+display the files that the user has requested
