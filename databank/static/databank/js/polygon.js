@@ -1,10 +1,10 @@
 //Js part for bounding box generate.
 
 //BoundingBox object has two arrays & contains all the coordinates.
-var boundingBox={
-    X:[],
-    Y:[]
-}; 
+var boundingBox = {
+    X: [],
+    Y: []
+};
 var judge;
 var Latitude;
 var Longitude;
@@ -18,69 +18,70 @@ var polylineLayer;
 var polygonLayer;
 
 //What happen if the polygon control button clicked.
-$("#polygon").click(function(){
-    if(judge===false){
-        judge=true;
-        $("#polygon").css("background-color","green");
-    }else if(judge===true){
-        judge=false;
+$("#polygon").click(function () {
+    if (judge === false) {
+        judge = true;
+        $("#polygon").css("background-color", "green");
+    } else if (judge === true) {
+        judge = false;
         disabler();
-        $("#polygon").css("background-color","white");  
-    }else{
-        judge=true;
-        $("#polygon").css("background-color","green");
+        $("#polygon").css("background-color", "white");
+    } else {
+        judge = true;
+        $("#polygon").css("background-color", "green");
     }
 });
 
 
 //Necesseary because to avoid new marker at the control button click.
-$("#myMap").click(function(e){
-    if($(".leaflet-control-container").is(":hover")!=true){
+$("#myMap").click(function (e) {
+    if ($(".leaflet-control-container").is(":hover") != true) {
         boundingBoxer();
     }
 });
 
-function boundingBoxer(){
-    
-    if(judge===true){
+function boundingBoxer() {
+
+    if (judge === true) {
 
         //Alert if there is more than X points.
         //Also manages the value of the bool variable, so onMapclick doesn't run multiple times.
-        if(szamlalo > 4){
+        if (szamlalo > 4) {
             alert("Legfeljebb 4 pontot rakhatsz le.");
-            bool = true; 
-        }else if (szamlalo > 3){
-            bool = true; 
+            bool = true;
+        } else if (szamlalo > 3) {
+            bool = true;
             szamlalo++;
-        }else{
+        } else {
             bool = false;
         }
-        
+
         //On click this takes the lats and lngs and puts them in an array.
         mymap.on('click', onMapClick);
-        function onMapClick(e){
-            if(!bool){   
-                bool = true;       
+
+        function onMapClick(e) {
+            if (!bool) {
+                bool = true;
                 Latitude = e.latlng.lat;
                 Longitude = e.latlng.lng;
                 boundingBox.X[szamlalo] = Latitude.toFixed(4);
-                boundingBox.Y[szamlalo] = Longitude.toFixed(4);     
+                boundingBox.Y[szamlalo] = Longitude.toFixed(4);
                 markerMaker(szamlalo);
                 //lineMaker(szamlalo);
                 polygonMaker(szamlalo);
                 //populateTable(szamlalo);
                 szamlalo++;
-                
-				//For debugging.
+
+                //For debugging.
                 console.log("szamlalo:" + szamlalo);
             }
-       }       
+        }
     }
 }
 
 //Creating marker layer.
-function markerMaker(number){
-    L.marker([Latitude,Longitude]).addTo(markersLayer); 
+function markerMaker(number) {
+    L.marker([Latitude, Longitude]).addTo(markersLayer);
     markersLayer.addTo(mymap);
 };
 
@@ -93,18 +94,19 @@ function markerMaker(number){
 //};
 
 //Adding a poligon if there is at least 3 markers.
-function polygonMaker(number){
-    if(number>2){
+function polygonMaker(number) {
+    if (number > 2) {
         //mymap.removeLayer(polylineLayer);
         mymap.removeLayer(polygonLayer);
         teglalap = [];
-    };
-    for(a=0;a<=number;a++){
-        coordinates[a] = [boundingBox.X[a],boundingBox.Y[a]];
+    }
+    ;
+    for (a = 0; a <= number; a++) {
+        coordinates[a] = [boundingBox.X[a], boundingBox.Y[a]];
         teglalap.push(coordinates[a]);
     }
-    polygonLayer = L.polygon(teglalap,{color:'green',opacity:0.6}).addTo(mymap);
-    };
+    polygonLayer = L.polygon(teglalap, {color: 'green', opacity: 0.6}).addTo(mymap);
+};
 
 //Poulating the table on the sidebar.
 /*function populateTable(number){
@@ -158,22 +160,22 @@ function delet(){
 
 
 //Disabling the feature creating and delete every feature on the map, set all variables to default.
-function disabler(){
-        /*markersLayer.clearLayers();
-        mymap.removeLayer(markersLayer);
+function disabler() {
+    /*markersLayer.clearLayers();
+    mymap.removeLayer(markersLayer);
 //        mymap.removeLayer(polylineLayer);
-        mymap.removeLayer(polygonLayer);
-        $('.leaflet-interactive').remove();
-        szamlalo = 0;
-        vonal = [];
-        teglalap = [];
-        coordinates = [];
-        boundingBox.X = [];
-        boundingBox.Y = [];*/
-        mymap.off("click",boundingBoxer());
+    mymap.removeLayer(polygonLayer);
+    $('.leaflet-interactive').remove();
+    szamlalo = 0;
+    vonal = [];
+    teglalap = [];
+    coordinates = [];
+    boundingBox.X = [];
+    boundingBox.Y = [];*/
+    mymap.off("click", boundingBoxer());
 }
 
-function cleaner(){
+function cleaner() {
     markersLayer.clearLayers();
     mymap.removeLayer(markersLayer);
     mymap.removeLayer(polygonLayer);
@@ -186,50 +188,72 @@ function cleaner(){
     boundingBox.Y = [];
 }
 
-function postData(){
-	//Biggest and lowest values from the arrays.
-	var maxX = Math.max(...boundingBox.X);
-	var minX = Math.min(...boundingBox.X);
-	var maxY = Math.max(...boundingBox.Y);
-    var minY = Math.min(...boundingBox.Y);
-    // var fileType = document.getElementById("type").value;
-    // console.log("POSTDATAAAA")
-    // var maxX = 	46.2699//Math.max(...boundingBox.X);
-	// var minX = 46.2504//Math.min(...boundingBox.X);
-	// var maxY = 20.1583//Math.max(...boundingBox.Y);
-    // var minY = 20.1027//Math.min(...boundingBox.Y);
-    var fileType = 'topo';
+function postData() {
+    let data = {
+        //Biggest and lowest values from the arrays.
+        maxX: 46.3699,//float(Math.max(...boundingBox.X)),
+        minX: 46.2504,//float(Math.min(...boundingBox.X)),
+        maxY: 20.1583,//float(Math.max(...boundingBox.Y)),
+        minY: 20.1027,//float(Math.min(...boundingBox.Y)),
+        fileType: 'topo',//document.getElementById("type").value
+    };
 
-	
-	//AJAX request to getdata view with the four coorinates.
-	$.ajax({
-        url: "getdata",
-		type: "GET",
-		data: {
-		    'max_x': maxX ,
-            'min_x' : minX,
-            'max_y': maxY ,
-            'min_y' : minY ,
-            'file_type': fileType},
-		success: function(){
-			console.log("Success!");
-            redirect(1);
-		}
-    });  
+    //AJAX request to getdata view with the four coorinates.
+    sendRequest(data);
 
-    return true;
 }
 
+let sendRequest = function (data) {
+    let response;
+    $.when(
+        $.ajax({
+            url: 'getdata',
+            type: 'GET',
+            data: data,
+            success: function (resp) {
+                response = resp;
+                console.log("Success!", response)
+            }
+        })
+    ).then(function (response) {
+        $.ajax({
+            url: 'get_layers',
+            type: 'GET',
+            data: response.data,
+            success: function (resp) {
+                console.log("Success!", resp);
+                let geometries = resp.geometries;
+                let url = resp.url;
+
+                console.log("!", resp);
+                redirect(url, geometries);
+            }
+        })
+    })
+}
+// success: function (response) {
+//     console.log("Success!");
+//     console.log("YAY", response);
+//     cb(response.url, 'GET', response.data, function (resp) {
+//         console.log("Success!");
+//         let geometries = resp.geometries;
+//         console.log("Success!", resp);
+//         let url = resp.url;
+//         add_layers(geometries);
+//         redirect(1);
+//     });
+//
+// }
 
 
-$("#trash").hover(function(){
+$("#trash").hover(function () {
     bool = true;
-    $("#trash").click(function(e){
+    $("#trash").click(function (e) {
         cleaner();
     });
     retrue();
 });
 
-function retrue(){
+function retrue() {
     judge = true;
 }

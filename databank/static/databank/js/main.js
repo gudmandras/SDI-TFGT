@@ -23,11 +23,15 @@ $(window).resize(function(){
     $('#mainContent').css('height',(browserHeight*0.775));
 });
 
-function redirect(a){
-    if(a == 1){
+function redirect(url, geometries=geometries){
+    if(geometries){
+
         window.location.replace('/databank/download');
+        console.log('AAAAAAAAAAAAAAAAA');
+        add_layers(geometries);
+
     }
-    if(a == 2){
+    else{
         window.location.replace('/databank/');
     }
 }
