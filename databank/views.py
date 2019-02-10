@@ -67,11 +67,6 @@ def getdata(request):
         # return redirect('../download/')
         return HttpResponse(result_list)
 
-        # return render(
-        #     request,
-        #     'download.html',
-        #     context={'outPath':result_list},
-        # )
     else:
         return HttpResponse('<h1>Page not found</h1>')
 

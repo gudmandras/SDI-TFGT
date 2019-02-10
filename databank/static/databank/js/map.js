@@ -15,7 +15,7 @@ var Esri_WorldShadedRelief = L.tileLayer('https://server.arcgisonline.com/ArcGIS
 var baseLayers = {
     "Topography": Esri_WorldTopoMap,
     "Satellite": Esri_WorldImagery,
-    "Relief":Esri_WorldShadedRelief,
+    "Relief": Esri_WorldShadedRelief,
 };
 
 //Define map.
