@@ -192,21 +192,35 @@ function postData(){
 	var minX = Math.min(...boundingBox.X);
 	var maxY = Math.max(...boundingBox.Y);
     var minY = Math.min(...boundingBox.Y);
-    var fileType = document.getElementById("type").value;
-    alert("NYAAAAAAAAAAAAAA")
+    // var fileType = document.getElementById("type").value;
+    // console.log("POSTDATAAAA")
+    // var maxX = 	46.2699//Math.max(...boundingBox.X);
+	// var minX = 46.2504//Math.min(...boundingBox.X);
+	// var maxY = 20.1583//Math.max(...boundingBox.Y);
+    // var minY = 20.1027//Math.min(...boundingBox.Y);
+    var fileType = 'topo';
+
 	
 	//AJAX request to getdata view with the four coorinates.
 	$.ajax({
-		url: "getdata/",
+        url: "getdata",
 		type: "GET",
-		data: {'max_x': maxX , 'min_x' : minX, 'max_y': maxY , 'min_y' : minY , 'fileType': fileType},
+		data: {
+		    'max_x': maxX ,
+            'min_x' : minX,
+            'max_y': maxY ,
+            'min_y' : minY ,
+            'file_type': fileType},
 		success: function(){
 			console.log("Success!");
+            //redirect(1);
 		}
     });  
 
     return true;
 }
+
+
 
 $("#trash").hover(function(){
     bool = true;

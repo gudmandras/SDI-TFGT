@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('getdata/', views.getdata, name='getdata'),
-    path('position/', views.PositionList.as_view(), name='position'),
-    path('download/', views.download, name='download'),
+    re_path('download?<float:min_y>&', views.download, name='download'),
 ]
 

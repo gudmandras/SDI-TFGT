@@ -1,0 +1,4 @@
+conda install django -y
+conda install psycopg2 -y
+conda install gdal -y
+conda install -c conda-forge/label/cf201901 postgisconda install -c conda-forge postgis
