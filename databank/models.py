@@ -36,9 +36,9 @@ class footprints(models.Model):
                         extent['max_y']) or (
                         xMax >= extent['min_x'] and xMax <= extent['max_x'] and yMin >= extent['min_y'] and yMin <=
                         extent['max_y'])):
+                    path = path.split('SDI-TFGT\\')[1]
                     result_list.append(path)
-                    raw_file = path[:-4]
-                    jgw_file = path.replace('.jgw', '.jpg')
+                    jgw_file = path.replace('jpg', 'jgw')
                     result_list.append(jgw_file)
 
         return result_list
