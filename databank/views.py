@@ -109,9 +109,9 @@ def getdata(request):
     # return HttpResponse(result_list)
 
 
-def download(request, *args):
+def download(request):
     req = request.session['res']
-    print('beleleptem getdata', *args)
+    print('beleleptem getdata')
     return render(
         request,
         'download.html',

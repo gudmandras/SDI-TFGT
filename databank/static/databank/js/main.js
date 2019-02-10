@@ -26,7 +26,7 @@ $(window).resize(function(){
 function redirect(url, geometries=geometries){
     if(geometries){
 
-        window.location.replace('/databank/download');
+        window.location.href='/databank/download';
         console.log('AAAAAAAAAAAAAAAAA');
         add_layers(geometries);
 
