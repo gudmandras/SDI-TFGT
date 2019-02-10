@@ -216,4 +216,4 @@ migrations/
 
 *.pyc
 *topo/*
-*footprints/*
+footprints/
