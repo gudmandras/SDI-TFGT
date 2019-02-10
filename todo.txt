@@ -3,6 +3,7 @@ show polygon on /download page as well and maybe focus on the selected area + la
 error-handling
 egy .bat script ami autmatikusan telepíti a condát, csinál egy virtual env-et, és telepít minden dependenciát meg configurál
 postgis lekérés
+fix download path
 login is working, reset password is not working preoperly
 drawing button fix
 first click should make a point
