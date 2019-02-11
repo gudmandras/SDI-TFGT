@@ -54,7 +54,6 @@ def getdata(request):
             'data_type': file_type
         }
 
-
         footprint = footprints()
         result_list = footprint.get_files(extent)
         print('sasddasdas',result_list)

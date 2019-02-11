@@ -199,7 +199,6 @@ function postData(){
 	// var maxY = 20.1583//Math.max(...boundingBox.Y);
     // var minY = 20.1027//Math.min(...boundingBox.Y);
     var fileType = 'topo';
-
 	
 	//AJAX request to getdata view with the four coorinates.
 	$.ajax({
@@ -215,8 +214,7 @@ function postData(){
 			console.log("Success!");
             redirect(1);
 		}
-    });  
-
+    });
     return true;
 }
 

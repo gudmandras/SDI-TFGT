@@ -25,7 +25,6 @@ class footprints(models.Model):
                 xMax = row[4]
                 path = row[5]
                 if (extent['data_type'] != "topo"): return
-
                 if ((xMin >= extent['min_x'] and yMin >= extent['min_y'] and xMax <= extent['max_x'] and yMax <=
                      extent['max_y']) or (
                         xMin >= extent['min_x'] and xMin <= extent['max_x'] and yMin >= extent['min_y'] and yMin <=
@@ -40,7 +39,6 @@ class footprints(models.Model):
                     result_list.append(path)
                     jgw_file = path.replace('jpg', 'jgw')
                     result_list.append(jgw_file)
-
         return result_list
     # return extent[0:6]
 
