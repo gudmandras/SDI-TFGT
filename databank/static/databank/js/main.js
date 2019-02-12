@@ -23,18 +23,18 @@ $(window).resize(function(){
     $('#mainContent').css('height',(browserHeight*0.775));
 });
 
-function redirect(url, geometries=geometries){
-    if(geometries){
-
-        window.location.href='/databank/download';
-        console.log('AAAAAAAAAAAAAAAAA');
-        add_layers(geometries);
-
-    }
-    else{
-        window.location.replace('/databank/');
-    }
-}
+// function redirect(url, geometries=geometries){
+//     if(geometries){
+//
+//         window.location.href='/databank/download';
+//         console.log('AAAAAAAAAAAAAAAAA');
+//         add_layers(geometries);
+//
+//     }
+//     else{
+//         window.location.replace('/databank/');
+//     }
+// }
 
 
 /**

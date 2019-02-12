@@ -26,31 +26,33 @@ var mymap = L.map('myMap', {
 });
 L.control.layers(baseLayers).addTo(mymap);
 
-let add_layers = function (geometries) {
+let add_layers = function (bounding_box, footprints) {
+    console.log('yaaay', footprints);
     var featuresToAdd = new L.FeatureGroup();
     mymap.addLayer(featuresToAdd);
 
-    // let footprints = geometries.fp;
-    // let polygons = [];
-    // for (let fp in footprints){
-    // 	polygons.push(L.polygon(footprints[fp]));
-    // }
-    // featuresToAdd.addLayer(polygons);
+    let polygons = [];
+    for (let ftprnts in footprints) {
+        for (let fp in footprints[ftprnts]) {
+            for (let f in ftprnts[fp]) {
+                parseFloat(f);
+            }
+        }
+        console.log(typeof footprints[ftprnts][0][0])
+        console.log('yaaay', footprints[ftprnts]);
+        featuresToAdd.addLayer(L.polygon(footprints[ftprnts]));
+        //polygons.push(L.polygon(fp));
+    }
 
 
-    let bb = Object.values(geometries.bb);
-    console.log('HERE IT IS ', bb);
-    let bb_float = bb.map(x => parseFloat(x));
-    let b = [
-        [bb_float[1], bb_float[0]],
-        [bb_float[1], bb_float[2]],
-        [bb_float[3], bb_float[0]],
-        [bb_float[3], bb_float[2]],
-    ]
-    let bounding_box = L.polygon(b);
-    console.log('HERE IT IS ', bounding_box);
-
-    featuresToAdd.addLayer(bounding_box);
+    // let bb = Object.values(bounding_box);
+    // console.log('HERE IT IS ', bb);
+    // let bb_float = bb.map(x => parseFloat(x));
+    //
+    // let bound_box = L.polygon(bb);
+    // console.log('HERE IT IS ', bound_box);
+    //
+    // featuresToAdd.addLayer(bound_box);
 
 
 };

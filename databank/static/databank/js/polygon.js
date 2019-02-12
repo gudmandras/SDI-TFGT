@@ -210,25 +210,29 @@ let sendRequest = function (data) {
             url: 'getdata',
             type: 'GET',
             data: data,
-            success: function (resp) {
-                response = resp;
-                console.log("Success!", response)
+            success: function (response) {
+                let paths = response.data.paths;
+                let bb = response.data.bb;
+                let footprints = response.data.extents;
+                console.log("Success!", response);
+                add_layers(bb, footprints);
             }
         })
-    ).then(function (response) {
-        $.ajax({
-            url: 'get_layers',
-            type: 'GET',
-            data: response.data,
-            success: function (resp) {
-                console.log("Success!", resp);
-                let geometries = resp.geometries;
-                let url = resp.url;
-
-                console.log("!", resp);
-                redirect(url, geometries);
-            }
-        })
+    ).then(function () {
+        console.log('passed')
+        // $.ajax({
+        //     url: 'get_layers',
+        //     type: 'GET',
+        //     data: response.data,
+        //     success: function (resp) {
+        //         console.log("Success!", resp);
+        //         let geometries = resp.geometries;
+        //         let url = resp.url;
+        //
+        //         console.log("!", resp);
+        //         redirect(url, geometries);
+        //     }
+        // })
     })
 }
 // success: function (response) {

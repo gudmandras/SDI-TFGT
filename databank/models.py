@@ -13,35 +13,37 @@ class footprints(models.Model):
 
     # name = models.CharField('Name', max_length=10, default='default')
 
-    def get_files(self, extent):
+    def get_files(self, bb):
         from django.db import connection
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM databank_footprints')
-            result_list = []
+            paths = []
+            extents=[]
             for row in cursor.fetchall():
                 yMin = row[1]
                 xMin = row[2]
                 yMax = row[3]
                 xMax = row[4]
                 path = row[5]
-                if (extent['data_type'] != "topo"): return
+                #if (extent['data_type'] != "topo"): return
 
-                if ((xMin >= extent['min_x'] and yMin >= extent['min_y'] and xMax <= extent['max_x'] and yMax <=
-                     extent['max_y']) or (
-                        xMin >= extent['min_x'] and xMin <= extent['max_x'] and yMin >= extent['min_y'] and yMin <=
-                        extent['max_y']) or (
-                        xMin >= extent['min_x'] and xMin <= extent['max_x'] and yMax >= extent['min_y'] and yMax <=
-                        extent['max_y']) or (
-                        xMax >= extent['min_x'] and xMax <= extent['max_x'] and yMax >= extent['min_y'] and yMax <=
-                        extent['max_y']) or (
-                        xMax >= extent['min_x'] and xMax <= extent['max_x'] and yMin >= extent['min_y'] and yMin <=
-                        extent['max_y'])):
+                if ((xMin >= bb['min_x'] and yMin >= bb['min_y'] and xMax <= bb['max_x'] and yMax <=
+                     bb['max_y']) or (
+                        xMin >= bb['min_x'] and xMin <= bb['max_x'] and yMin >= bb['min_y'] and yMin <=
+                        bb['max_y']) or (
+                        xMin >= bb['min_x'] and xMin <= bb['max_x'] and yMax >= bb['min_y'] and yMax <=
+                        bb['max_y']) or (
+                        xMax >= bb['min_x'] and xMax <= bb['max_x'] and yMax >= bb['min_y'] and yMax <=
+                        bb['max_y']) or (
+                        xMax >= bb['min_x'] and xMax <= bb['max_x'] and yMin >= bb['min_y'] and yMin <=
+                        bb['max_y'])):
                     path = path.split('SDI-TFGT\\')[1]
-                    result_list.append(path)
+                    paths.append(path)
                     jgw_file = path.replace('jpg', 'jgw')
-                    result_list.append(jgw_file)
+                    paths.append(jgw_file)
+                    extents.append([float(bb['min_y']), float(bb['min_x']), float(bb['max_y']), float(bb['max_x'])])
 
-        return result_list
+        return paths, extents
     # return extent[0:6]
 
 

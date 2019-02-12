@@ -10,8 +10,6 @@ import json
 from .models import footprints
 
 
-
-
 def index(request):
     """
     View function for home page (index.html) of site.
@@ -43,14 +41,13 @@ def get_layers(request):
     # - return 404
     if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
 
-
     print('bbbbbbbbbbbbbbbbbb', request)
     extent = {
         "min_y": float(request.GET['min_y']),
         "min_x": float(request.GET['min_x']),
         "max_y": float(request.GET['max_y']),
         "max_x": float(request.GET['max_x']),
-        #'data_type': request.GET['fileType'],
+        # 'data_type': request.GET['fileType'],
     }
     return JsonResponse({
         'success': True,
@@ -76,29 +73,41 @@ def getdata(request):
     # - return 404
     if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
 
-    extent = {
+    bounding_box = {
         "min_y": float(request.GET['minY']),
         "min_x": float(request.GET['minX']),
         "max_y": float(request.GET['maxY']),
         "max_x": float(request.GET['maxX']),
-        'data_type': request.GET['fileType'],
+        # 'data_type': request.GET['fileType'],
     }
 
     fp = footprints()
-    paths = fp.get_files(extent)
+    paths, extents = fp.get_files(bounding_box)
+    extents.insert(0, [bounding_box['min_y'], bounding_box['min_y'], bounding_box['max_y'], bounding_box['max_x']])
     print('PATHS: ', paths)
-    print('yay')
+    print('EXTENTS', extents)
     request.session['res'] = paths
+    footprnts = []
+    for ext in extents:
+        footprnts.append([
+            [ext[1], ext[0]],
+            [ext[1], ext[2]],
+            [ext[3], ext[0]],
+            [ext[3], ext[2]],
+        ])
+    bounding_box = extents[0]
+    footprnts.pop(0)
+
     data = {
-        'extent': extent,
+        'bb': bounding_box,
+        'extents': footprnts,
         'paths': paths,
     }
     print('PATHS: ', paths)
 
     return JsonResponse({
         'success': True,
-        'url': 'get_layers',
-        'data': extent,
+        'data': data,
     })
 
     # redirect = HttpResponseRedirect(reverse('download', args=(result_list[0])))
