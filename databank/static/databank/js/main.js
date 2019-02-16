@@ -37,21 +37,32 @@ $(window).resize(function () {
 // }
 let add_download_div = function (paths) {
     let nt = '';
-    let item5 = document.querySelector(".item5");
+    let divItem3 = document.querySelector(".item3");
+    let divItem5 = document.querySelector(".item5");
+    let divItem6 = document.querySelector(".item6");
+    let divItem7 = document.querySelector(".item7");
+
+    divItem3.innerHTML = "<div class='item3'></div>";
+    divItem6.innerHTML = "<div class='item6'></div>";
+    divItem7.innerHTML = "<div class='item7'><button onclick='getZippedData()'>ZIP</button></div>";
 
     for (let p in paths) {
         let path = paths[p];
         let name = path.split('\\')[1];
-
-        b = "<a href='http://127.0.0.1:8000/static/topo/" + name + "' download='" + name + "'>" + name + "</a>\n"
-        item5.innerHTML += b;
-        // $(b).appendTo(".item5");
-        // document.getElementsByClassName('item5')[0].append(b);
-        // document.getElementsByClassName('item6')
+        divItem5.innerHTML += "<a href='http://127.0.0.1:8000/static/topo/" + name + "' download='" + name + "'>" + name + "</a>\n";
     }
-    // console.log(nt)
-    // document.getElementsByClassName('item5')[0].innerHTML = nt.join("");
 
+};
+
+let getZippedData =function () {
+    $.ajax({
+        url: 'get_zipped',
+        type: 'GET',
+        data: "",
+        success: function (response) {
+            console.log('Success!', response);
+        }
+    })
 };
 
 

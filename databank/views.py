@@ -1,15 +1,20 @@
+from wsgiref.util import FileWrapper
 from django.shortcuts import render
 from django.views import generic
-
+from zipfile import ZipFile
 from django.shortcuts import render, HttpResponse, render_to_response, HttpResponseRedirect, reverse
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 import json
+import os
+from django.conf import settings
+
 
 # Create your views here.
 from .models import footprints
 
 from django.contrib.staticfiles.templatetags.staticfiles import static
+
 def index(request):
     """
     View function for home page (index.html) of site.
@@ -26,42 +31,9 @@ def index(request):
         context={'bounding_box': ['yay']},
     )
 
-
-def get_layers(request):
+def get_data(request):
     """
     View function that gets the input data from the bounding box via a GET request,
-    and immideately inserts it in the table, with the username.
-    """
-
-    # if request.user.is_authenticated:
-    #     username = request.user.username
-
-    # If the request is not GET, 404; otherwise get the values from the front-end, and insert it in the Position table as a new row.
-    # TODO:
-    # - return 404
-    if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
-
-    print('bbbbbbbbbbbbbbbbbb', request)
-    extent = {
-        "min_y": float(request.GET['min_y']),
-        "min_x": float(request.GET['min_x']),
-        "max_y": float(request.GET['max_y']),
-        "max_x": float(request.GET['max_x']),
-        # 'data_type': request.GET['fileType'],
-    }
-    return JsonResponse({
-        'success': True,
-        'url': 'download',
-        'geometries': {
-            'fp': [],
-            'bb': extent,
-        }
-    })
-
-
-def getdata(request):
-    """
-    View function that gets the input data from the bounding box via a GET request, 
     and immideately inserts it in the table, with the username.
     """
 
@@ -86,9 +58,9 @@ def getdata(request):
     extents.insert(0, [bounding_box['min_y'], bounding_box['min_x'], bounding_box['max_y'], bounding_box['max_x']])
     print('PATHS: ', paths)
     print('EXTENTS', extents)
-    request.session['res'] = paths
+    print('yay',static(paths[0]))
+
     footprnts = []
-    print('yay',static('topo\\27-143.jpg'))
     for ext in extents:
         footprnts.append([
             [ext[1], ext[0]],
@@ -104,19 +76,62 @@ def getdata(request):
         'extents': footprnts,
         'paths': paths,
     }
-    print('PATHS: ', paths)
+    request.session['data'] = data
 
     return JsonResponse({
         'success': True,
         'data': data,
     })
 
-    # redirect = HttpResponseRedirect(reverse('download', args=(result_list[0])))
-    # redirect['Location'] += '&'.join(['result={}'.format(x) for x in result_list])
-    # return redirect
 
-    # return redirect('../download/')
-    # return HttpResponse(result_list)
+def get_zipped(request):
+    # if request.user.is_authenticated:
+    #     username = request.user.username
+
+    # If the request is not GET, 404; otherwise get the values from the front-end, and insert it in the Position table as a new row.
+    # TODO:
+    # - return 404
+    if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
+    paths = request.session['data']['paths']
+    print('Following files will be zipped:')
+    for file_name in paths:
+        print(file_name)
+
+    # directory = './static/topo/'
+    # file_paths = get_all_file_paths(directory, paths)
+    #
+    # # writing files to a zipfile
+    # with ZipFile('images.zip', 'w') as zip:
+    #     # writing each file one by one
+    #     for file in paths:
+    #         zip.write('http://127.0.0.1:8000' + (static(file)))
+    #
+    # wrapper = FileWrapper(open('images.zip', 'rb'))
+    # content_type = 'application/zip'
+    # content_disposition = 'attachment; filename=export.zip'
+    #
+    # response = HttpResponse(wrapper, content_type=content_type)
+    # response['Content-Disposition'] = content_disposition
+    # return response
+
+
+def get_all_file_paths(directory, paths):
+    # initializing empty file paths list
+    file_paths = []
+
+    # crawling through directory and subdirectories
+    for root, directories, files in os.walk(os.path.join(os.path.join(settings.BASE_DIR,'databank'),'static'),'topo'):
+        for filename in files:
+            # join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)
+
+            # returning all file paths
+    return file_paths
+
+
+
+
 
 
 def download(request):

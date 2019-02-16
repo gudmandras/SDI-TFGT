@@ -204,53 +204,21 @@ function postData() {
 }
 
 let sendRequest = function (data) {
-    let response;
-    $.when(
-        $.ajax({
-            url: 'getdata',
-            type: 'GET',
-            data: data,
-            success: function (response) {
-                console.log("Success!", response);
+    $.ajax({
+        url: 'get_data',
+        type: 'GET',
+        data: data,
+        success: function (response) {
+            console.log("Success!", response);
+            let paths = response.data.paths;
+            let footprints = response.data.extents;
+            // let bb = response.data.bb;
 
-                let paths = response.data.paths;
-                // let bb = response.data.bb;
-                let footprints = response.data.extents;
-                console.log("Success!", response);
-                add_layers(footprints);
-                add_download_div(paths);
-            }
-        })
-    ).then(function () {
-        console.log('passed')
-        // $.ajax({
-        //     url: 'get_layers',
-        //     type: 'GET',
-        //     data: response.data,
-        //     success: function (resp) {
-        //         console.log("Success!", resp);
-        //         let geometries = resp.geometries;
-        //         let url = resp.url;
-        //
-        //         console.log("!", resp);
-        //         redirect(url, geometries);
-        //     }
-        // })
+            add_layers(footprints);
+            add_download_div(paths);
+        }
     })
-}
-// success: function (response) {
-//     console.log("Success!");
-//     console.log("YAY", response);
-//     cb(response.url, 'GET', response.data, function (resp) {
-//         console.log("Success!");
-//         let geometries = resp.geometries;
-//         console.log("Success!", resp);
-//         let url = resp.url;
-//         add_layers(geometries);
-//         redirect(1);
-//     });
-//
-// }
+};
 
 
 $("#trash").hover(function () {
