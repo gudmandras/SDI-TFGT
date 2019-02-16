@@ -41,7 +41,7 @@ class footprints(models.Model):
                     paths.append(path)
                     jgw_file = path.replace('jpg', 'jgw')
                     paths.append(jgw_file)
-                    extents.append([float(bb['min_y']), float(bb['min_x']), float(bb['max_y']), float(bb['max_x'])])
+                    extents.append([float(yMin), float(xMin), float(yMax), float(xMax)])
 
         return paths, extents
     # return extent[0:6]

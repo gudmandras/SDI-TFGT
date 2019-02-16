@@ -211,11 +211,14 @@ let sendRequest = function (data) {
             type: 'GET',
             data: data,
             success: function (response) {
+                console.log("Success!", response);
+
                 let paths = response.data.paths;
-                let bb = response.data.bb;
+                // let bb = response.data.bb;
                 let footprints = response.data.extents;
                 console.log("Success!", response);
-                add_layers(bb, footprints);
+                add_layers(footprints);
+                add_download_div(paths);
             }
         })
     ).then(function () {

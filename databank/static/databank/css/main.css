@@ -54,7 +54,7 @@ html{
     grid-column: 1 / span 2;
 }
 .item5 {
-    grid-area: 3 / 1 / 8 / 3;
+    grid-column: 1 / span 2
 }
 .item6{
     grid-column: 1 / span 2;
@@ -128,7 +128,7 @@ table, th, td {
     grid-column: 1 / span 2;
 }
 .item5 {
-    grid-area: 3 / 1 / 8 / 3;
+    grid-column: 1 / span 2;
 }
 .item6{
     grid-column: 1 / span 2;

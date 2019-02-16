@@ -26,7 +26,7 @@ var mymap = L.map('myMap', {
 });
 L.control.layers(baseLayers).addTo(mymap);
 
-let add_layers = function (bounding_box, footprints) {
+let add_layers = function ( footprints) {
     console.log('yaaay', footprints);
     var featuresToAdd = new L.FeatureGroup();
     mymap.addLayer(featuresToAdd);
@@ -38,8 +38,6 @@ let add_layers = function (bounding_box, footprints) {
                 parseFloat(f);
             }
         }
-        console.log(typeof footprints[ftprnts][0][0])
-        console.log('yaaay', footprints[ftprnts]);
         featuresToAdd.addLayer(L.polygon(footprints[ftprnts]));
         //polygons.push(L.polygon(fp));
     }

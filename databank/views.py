@@ -9,7 +9,7 @@ import json
 # Create your views here.
 from .models import footprints
 
-
+from django.contrib.staticfiles.templatetags.staticfiles import static
 def index(request):
     """
     View function for home page (index.html) of site.
@@ -83,23 +83,24 @@ def getdata(request):
 
     fp = footprints()
     paths, extents = fp.get_files(bounding_box)
-    extents.insert(0, [bounding_box['min_y'], bounding_box['min_y'], bounding_box['max_y'], bounding_box['max_x']])
+    extents.insert(0, [bounding_box['min_y'], bounding_box['min_x'], bounding_box['max_y'], bounding_box['max_x']])
     print('PATHS: ', paths)
     print('EXTENTS', extents)
     request.session['res'] = paths
     footprnts = []
+    print('yay',static('topo\\27-143.jpg'))
     for ext in extents:
         footprnts.append([
             [ext[1], ext[0]],
-            [ext[1], ext[2]],
             [ext[3], ext[0]],
             [ext[3], ext[2]],
+            [ext[1], ext[2]],
         ])
-    bounding_box = extents[0]
-    footprnts.pop(0)
+    # bounding_box = extents[0]
+    # footprnts.pop(0)
 
     data = {
-        'bb': bounding_box,
+        # 'bb': bounding_box,
         'extents': footprnts,
         'paths': paths,
     }
