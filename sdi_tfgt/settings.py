@@ -144,3 +144,17 @@ LOGIN_REDIRECT_URL = '/'
 
 # For advanced use: https://docs.djangoproject.com/en/2.0/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+"""
+https://stackoverflow.com/questions/11894765/unable-log-in-to-the-django-admin-page-with-a-valid-username-and-password
+
+"""
+
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 86400  # sec
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_NAME = 'DSESSIONID'
+SESSION_COOKIE_SECURE = False

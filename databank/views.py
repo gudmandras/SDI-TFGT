@@ -31,85 +31,113 @@ def index(request):
         context={'bounding_box': ['yay']},
     )
 
+
 def get_data(request):
-    """
-    View function that gets the input data from the bounding box via a GET request,
-    and immideately inserts it in the table, with the username.
-    """
+    try:
+        if request.user.is_authenticated:
+            username = request.user.username
 
-    # if request.user.is_authenticated:
-    #     username = request.user.username
+        bounding_box = {
+            "min_y": float(request.GET['minY']),
+            "min_x": float(request.GET['minX']),
+            "max_y": float(request.GET['maxY']),
+            "max_x": float(request.GET['maxX']),
+            # 'data_type': request.GET['fileType'],
+        }
 
-    # If the request is not GET, 404; otherwise get the values from the front-end, and insert it in the Position table as a new row.
-    # TODO:
-    # - return 404
-    if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
 
-    bounding_box = {
-        "min_y": float(request.GET['minY']),
-        "min_x": float(request.GET['minX']),
-        "max_y": float(request.GET['maxY']),
-        "max_x": float(request.GET['maxX']),
-        # 'data_type': request.GET['fileType'],
-    }
+        """
+        I put the vounding box in the list as well. This is a workaround until postgis query works.
+        ALSO THIS IS A MESS! CLEAR IT UP!
+        """
+        fp = footprints()
+        paths, extents = fp.get_files(bounding_box)
+        extents.insert(0, [bounding_box['min_y'], bounding_box['min_x'], bounding_box['max_y'], bounding_box['max_x']])
 
-    fp = footprints()
-    paths, extents = fp.get_files(bounding_box)
-    extents.insert(0, [bounding_box['min_y'], bounding_box['min_x'], bounding_box['max_y'], bounding_box['max_x']])
-    print('PATHS: ', paths)
-    print('EXTENTS', extents)
-    print('yay',static(paths[0]))
+        footprnts = []
+        for ext in extents:
+            footprnts.append([
+                [ext[1], ext[0]],
+                [ext[3], ext[0]],
+                [ext[3], ext[2]],
+                [ext[1], ext[2]],
+            ])
+        # bounding_box = extents[0]
+        # footprnts.pop(0)
 
-    footprnts = []
-    for ext in extents:
-        footprnts.append([
-            [ext[1], ext[0]],
-            [ext[3], ext[0]],
-            [ext[3], ext[2]],
-            [ext[1], ext[2]],
-        ])
-    # bounding_box = extents[0]
-    # footprnts.pop(0)
+        data = {
+            # 'bb': bounding_box,
+            'extents': footprnts,
+            'paths': paths,
+        }
+        request.session['data'] = data
 
-    data = {
-        # 'bb': bounding_box,
-        'extents': footprnts,
-        'paths': paths,
-    }
-    request.session['data'] = data
-
-    return JsonResponse({
-        'success': True,
-        'data': data,
-    })
+        return JsonResponse({
+            'success': True,
+            'data': data,
+        })
+    except Exception as e:
+        if not request.is_ajax() and request.method == "GET":
+            print(e)
+            status_code = 400
+            message = "The request is not valid."
+            explanation = "The server could not accept your request because it was not valid. " \
+                          "Please try again and if the error keeps happening get in contact with us."
+            return JsonResponse({'message': message, 'explanation': explanation}, status=status_code)
+        else:
+            print(e)
+            status_code = 500
+            message = "The server could not process your request."
+            # You should log this error because this usually means your front end has a bug.
+            # do you whant to explain anything?
+            explanation = "Something went wrong on the server side. Contact your teacher."
+            return JsonResponse({'message': message, 'explanation': explanation}, status=status_code)
 
 
 def get_zipped(request):
-    # if request.user.is_authenticated:
-    #     username = request.user.username
+    try:
+        if request.user.is_authenticated:
+            username = request.user.username
 
-    # If the request is not GET, 404; otherwise get the values from the front-end, and insert it in the Position table as a new row.
-    # TODO:
-    # - return 404
-    if request.method == 'GET': HttpResponse('<h1>Page not found</h1>')
-    paths = request.session['data']['paths']
-    print('Following files will be zipped:')
-    for file_name in paths:
-        print(file_name)
+        paths = request.session['data']['paths']
+        print('Following files will be zipped:')
+        for file_name in paths:
+            print(file_name)
 
-    with ZipFile('databank/static/zips/images.zip', 'w') as zip:
-        # writing each file one by one
-        for file in paths:
-            zip.write('D:\\SDI-TFGT\\databank\\static\\' + file)
+        with ZipFile('databank/static/zips/images.zip', 'w') as zip:
+            # writing each file one by one
+            for file in paths:
+                zip.write('D:\\SDI-TFGT\\databank\\static\\' + file)
 
-    wrapper = FileWrapper(open('databank/static/zips/images.zip', 'rb'))
-    content_type = 'application/zip'
-    content_disposition = 'attachment; filename=export.zip'
+        wrapper = FileWrapper(open('databank/static/zips/images.zip', 'rb'))
+        content_type = 'application/zip'
+        content_disposition = 'attachment; filename=export.zip'
 
-    response = HttpResponse(wrapper, content_type=content_type)
-    response['Content-Disposition'] = content_disposition
-    return response
+        response = HttpResponse(wrapper, content_type=content_type)
+        response['Content-Disposition'] = content_disposition
+        return response
+    except Exception as e:
+        if not request.is_ajax() and request.method == "GET":
+            print(e)
+            status_code = 400
+            message = "The request is not valid."
+            explanation = "The server could not accept your request because it was not valid. " \
+                          "Please try again and if the error keeps happening get in contact with us."
+            return JsonResponse({'message': message, 'explanation': explanation}, status=status_code)
+        else:
+            print(e)
+            status_code = 500
+            message = "The server could not process your request."
+            # You should log this error because this usually means your front end has a bug.
+            # do you whant to explain anything?
+            explanation = "Something went wrong on the server side. Contact your teacher."
+            return JsonResponse({'message': message, 'explanation': explanation}, status=status_code)
 
+    """
+    Instead of creating zips on the server side, we should use a temp file, 
+    that gets deleted by the garbage collector when it is not used anymore.
+    
+    """
     # directory = './static/topo/'
     # file_paths = get_all_file_paths(directory, paths)
     #
@@ -128,33 +156,14 @@ def get_zipped(request):
     # return response
 
 
-def get_all_file_paths(directory, paths):
-    # initializing empty file paths list
-    file_paths = []
-
-    # crawling through directory and subdirectories
-    for root, directories, files in os.walk(os.path.join(os.path.join(settings.BASE_DIR,'databank'),'static'),'topo'):
-        for filename in files:
-            # join the two strings in order to form the full filepath.
-            filepath = os.path.join(root, filename)
-            file_paths.append(filepath)
-
-            # returning all file paths
-    return file_paths
-
-
-
-
-
-
-def download(request):
-    req = request.session['res']
-    print('beleleptem getdata')
-    return render(
-        request,
-        'download.html',
-        context={'outPath': req},
-    )
+# def download(request):
+#     req = request.session['res']
+#     print('beleleptem getdata')
+#     return render(
+#         request,
+#         'download.html',
+#         context={'outPath': req},
+#     )
 
 
 # #Output html for developer purposes.
