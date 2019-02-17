@@ -27,7 +27,7 @@ var mymap = L.map('myMap', {
 L.control.layers(baseLayers).addTo(mymap);
 
 
-////////////////////////////////////////////////////
+//NEW_CODE
 var editableLayers = new L.FeatureGroup();
 mymap.addLayer(editableLayers);
 
@@ -72,17 +72,6 @@ var options = {
 var drawControl = new L.Control.Draw(options);
 mymap.addControl(drawControl);
 
-mymap.on(L.Draw.Event.CREATED, function (e) {
-    var type = e.layerType,
-        layer = e.layer;
-    console.log(e.layer.getLatLngs());
-
-    if (type === 'marker') {
-        layer.bindPopup('A popup!');
-    }
-
-    editableLayers.addLayer(layer);
-});
 
 ///////////////////////////////////////////////////////
 
@@ -115,6 +104,7 @@ let add_layers = function (footprints) {
 
 };
 
+//OLD_CODE
 // //Js for new menu button(polygon).
 // var polygonButton = L.Control.extend({
 //     options: {
