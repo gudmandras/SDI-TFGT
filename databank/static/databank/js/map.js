@@ -26,7 +26,67 @@ var mymap = L.map('myMap', {
 });
 L.control.layers(baseLayers).addTo(mymap);
 
-let add_layers = function ( footprints) {
+
+////////////////////////////////////////////////////
+var editableLayers = new L.FeatureGroup();
+mymap.addLayer(editableLayers);
+
+var MyCustomMarker = L.Icon.extend({
+        options: {
+            shadowUrl: null,
+            iconAnchor: new L.Point(12, 12),
+            iconSize: new L.Point(24, 24),
+            iconUrl: 'https://ya-webdesign.com/images/pins-vector-location-sign-6.png'
+        }
+    });
+
+var options = {
+    position: 'topleft',
+    draw: {
+        polygon: {
+            allowIntersection: false, // Restricts shapes to simple polygons
+            drawError: {
+                color: '#e1e100', // Color the shape will turn when intersects
+                message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+            },
+            shapeOptions: {
+                color: '#bada55'
+            }
+        },
+        circle: false, // Turns off this drawing tool
+        rectangle: {
+            shapeOptions: {
+                clickable: false
+            }
+        },
+        marker: {
+            icon: new MyCustomMarker()
+        }
+    },
+    edit: {
+        featureGroup: editableLayers, //REQUIRED!!
+        remove: true
+    }
+};
+
+var drawControl = new L.Control.Draw(options);
+mymap.addControl(drawControl);
+
+mymap.on(L.Draw.Event.CREATED, function (e) {
+    var type = e.layerType,
+        layer = e.layer;
+    console.log(e.layer.getLatLngs());
+
+    if (type === 'marker') {
+        layer.bindPopup('A popup!');
+    }
+
+    editableLayers.addLayer(layer);
+});
+
+///////////////////////////////////////////////////////
+
+let add_layers = function (footprints) {
     console.log('yaaay', footprints);
     var featuresToAdd = new L.FeatureGroup();
     mymap.addLayer(featuresToAdd);
@@ -55,45 +115,45 @@ let add_layers = function ( footprints) {
 
 };
 
-//Js for new menu button(polygon).
-var polygonButton = L.Control.extend({
-    options: {
-        position: 'topleft'
-    },
-    onAdd: function (mymap) {
-        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-        container.id = "polygon";
-        container.style.backgroundColor = 'white';
-        container.style.backgroundImage = "url(http://icons.iconarchive.com/icons/icons8/android/256/Maps-Polygon-icon.png)";
-        container.style.backgroundSize = '100% 100%';
-        container.style.width = '30px';
-        container.style.height = '30px';
-        return container;
-    }
-});
+// //Js for new menu button(polygon).
+// var polygonButton = L.Control.extend({
+//     options: {
+//         position: 'topleft'
+//     },
+//     onAdd: function (mymap) {
+//         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+//         container.id = "polygon";
+//         container.style.backgroundColor = 'white';
+//         container.style.backgroundImage = "url(http://icons.iconarchive.com/icons/icons8/android/256/Maps-Polygon-icon.png)";
+//         container.style.backgroundSize = '100% 100%';
+//         container.style.width = '30px';
+//         container.style.height = '30px';
+//         return container;
+//     }
+// });
+//
+// var deleteButton = L.Control.extend({
+//     options: {
+//         position: 'topleft'
+//     },
+//     onAdd: function (mymap) {
+//         var container = L.DomUtil.create('trash');
+//         container.id = "trash";
+//         container.style.backgroundColor = 'white';
+//         container.style.backgroundImage = "url(https://cdn3.iconfinder.com/data/icons/cleaning-icons/512/Trash_Can-512.png)";
+//         container.style.backgroundSize = '100% 100%';
+//         container.style.width = '30px';
+//         container.style.height = '30px';
+//         return container;
+//     }
+// });
 
-var deleteButton = L.Control.extend({
-    options: {
-        position: 'topleft'
-    },
-    onAdd: function (mymap) {
-        var container = L.DomUtil.create('trash');
-        container.id = "trash";
-        container.style.backgroundColor = 'white';
-        container.style.backgroundImage = "url(https://cdn3.iconfinder.com/data/icons/cleaning-icons/512/Trash_Can-512.png)";
-        container.style.backgroundSize = '100% 100%';
-        container.style.width = '30px';
-        container.style.height = '30px';
-        return container;
-    }
-});
-
-
-// get the path name from browser
-var path = window.location.pathname;
-
-// if the path is not pointing to download, the polygon button and with that the polygon drawing is impossible
-if (path != "/databank/download/") {
-    mymap.addControl(new polygonButton());
-    mymap.addControl(new deleteButton());
-}
+//
+// // get the path name from browser
+// var path = window.location.pathname;
+//
+// // if the path is not pointing to download, the polygon button and with that the polygon drawing is impossible
+// if (path != "/databank/download/") {
+//     mymap.addControl(new polygonButton());
+//     mymap.addControl(new deleteButton());
+// }

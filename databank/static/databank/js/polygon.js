@@ -17,67 +17,67 @@ var markersLayer = L.layerGroup();
 var polylineLayer;
 var polygonLayer;
 
-//What happen if the polygon control button clicked.
-$("#polygon").click(function () {
-    if (judge === false) {
-        judge = true;
-        $("#polygon").css("background-color", "green");
-    } else if (judge === true) {
-        judge = false;
-        disabler();
-        $("#polygon").css("background-color", "white");
-    } else {
-        judge = true;
-        $("#polygon").css("background-color", "green");
-    }
-});
+// //What happen if the polygon control button clicked.
+// $("#polygon").click(function () {
+//     if (judge === false) {
+//         judge = true;
+//         $("#polygon").css("background-color", "green");
+//     } else if (judge === true) {
+//         judge = false;
+//         disabler();
+//         $("#polygon").css("background-color", "white");
+//     } else {
+//         judge = true;
+//         $("#polygon").css("background-color", "green");
+//     }
+// });
 
 
-//Necesseary because to avoid new marker at the control button click.
-$("#myMap").click(function (e) {
-    if ($(".leaflet-control-container").is(":hover") != true) {
-        boundingBoxer();
-    }
-});
-
-function boundingBoxer() {
-
-    if (judge === true) {
-
-        //Alert if there is more than X points.
-        //Also manages the value of the bool variable, so onMapclick doesn't run multiple times.
-        if (szamlalo > 4) {
-            alert("Legfeljebb 4 pontot rakhatsz le.");
-            bool = true;
-        } else if (szamlalo > 3) {
-            bool = true;
-            szamlalo++;
-        } else {
-            bool = false;
-        }
-
-        //On click this takes the lats and lngs and puts them in an array.
-        mymap.on('click', onMapClick);
-
-        function onMapClick(e) {
-            if (!bool) {
-                bool = true;
-                Latitude = e.latlng.lat;
-                Longitude = e.latlng.lng;
-                boundingBox.X[szamlalo] = Latitude.toFixed(4);
-                boundingBox.Y[szamlalo] = Longitude.toFixed(4);
-                markerMaker(szamlalo);
-                //lineMaker(szamlalo);
-                polygonMaker(szamlalo);
-                //populateTable(szamlalo);
-                szamlalo++;
-
-                //For debugging.
-                console.log("szamlalo:" + szamlalo);
-            }
-        }
-    }
-}
+// //Necesseary because to avoid new marker at the control button click.
+// $("#myMap").click(function (e) {
+//     if ($(".leaflet-control-container").is(":hover") != true) {
+//         boundingBoxer();
+//     }
+// });
+//
+// function boundingBoxer() {
+//
+//     if (judge === true) {
+//
+//         //Alert if there is more than X points.
+//         //Also manages the value of the bool variable, so onMapclick doesn't run multiple times.
+//         if (szamlalo > 4) {
+//             alert("Legfeljebb 4 pontot rakhatsz le.");
+//             bool = true;
+//         } else if (szamlalo > 3) {
+//             bool = true;
+//             szamlalo++;
+//         } else {
+//             bool = false;
+//         }
+//
+//         //On click this takes the lats and lngs and puts them in an array.
+//         mymap.on('click', onMapClick);
+//
+//         function onMapClick(e) {
+//             if (!bool) {
+//                 bool = true;
+//                 Latitude = e.latlng.lat;
+//                 Longitude = e.latlng.lng;
+//                 boundingBox.X[szamlalo] = Latitude.toFixed(4);
+//                 boundingBox.Y[szamlalo] = Longitude.toFixed(4);
+//                 markerMaker(szamlalo);
+//                 //lineMaker(szamlalo);
+//                 polygonMaker(szamlalo);
+//                 //populateTable(szamlalo);
+//                 szamlalo++;
+//
+//                 //For debugging.
+//                 console.log("szamlalo:" + szamlalo);
+//             }
+//         }
+//     }
+// }
 
 //Creating marker layer.
 function markerMaker(number) {
