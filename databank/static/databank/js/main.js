@@ -43,8 +43,8 @@ let add_download_div = function (paths) {
     let divItem7 = document.querySelector(".item7");
 
     divItem3.innerHTML = "<div class='item3'></div>";
-    divItem6.innerHTML = "<div class='item6'></div>";
-    divItem7.innerHTML = "<div class='item7'><button onclick='getZippedData()'>ZIP</button></div>";
+    divItem7.innerHTML = "<div class='item7'></div>";
+    divItem6.innerHTML = "<div class='item6'><button onclick='getZippedData()'>ZIP</button></div>";
 
     for (let p in paths) {
         let path = paths[p];
@@ -60,11 +60,15 @@ let getZippedData =function () {
         type: 'GET',
         data: "",
         success: function (response) {
-            console.log('Success!', response);
+            downlaod_zip_div(response);
         }
     })
 };
 
+let downlaod_zip_div = function (response){
+    let divItem7 = document.querySelector(".item7");
+    divItem7.innerHTML += "<a href='http://127.0.0.1:8000/static/zips/images.zip' download='images.zip'>Download ZIP</a>";
+};
 
 /**
  *pssibilities

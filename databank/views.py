@@ -8,12 +8,12 @@ from django.http import JsonResponse
 import json
 import os
 from django.conf import settings
-
+from django.contrib.staticfiles.templatetags.staticfiles import static
+import io
 
 # Create your views here.
 from .models import footprints
 
-from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def index(request):
     """
@@ -97,20 +97,33 @@ def get_zipped(request):
     for file_name in paths:
         print(file_name)
 
+    with ZipFile('databank/static/zips/images.zip', 'w') as zip:
+        # writing each file one by one
+        for file in paths:
+            zip.write('D:\\SDI-TFGT\\databank\\static\\' + file)
+
+    wrapper = FileWrapper(open('databank/static/zips/images.zip', 'rb'))
+    content_type = 'application/zip'
+    content_disposition = 'attachment; filename=export.zip'
+
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Disposition'] = content_disposition
+    return response
+
     # directory = './static/topo/'
     # file_paths = get_all_file_paths(directory, paths)
     #
-    # # writing files to a zipfile
-    # with ZipFile('images.zip', 'w') as zip:
+    # writing files to a zipfile
+    # zipp = io.BytesIO()
+    # with ZipFile(zipp, 'w') as zip:
     #     # writing each file one by one
     #     for file in paths:
-    #         zip.write('http://127.0.0.1:8000' + (static(file)))
+    #         zip.write('D:\\SDI-TFGT\\databank\\static\\' +file)
     #
-    # wrapper = FileWrapper(open('images.zip', 'rb'))
     # content_type = 'application/zip'
-    # content_disposition = 'attachment; filename=export.zip'
+    # content_disposition = 'attachment; filename=images.zip'
     #
-    # response = HttpResponse(wrapper, content_type=content_type)
+    # response = HttpResponse(zipp.getvalue(), content_type=content_type)
     # response['Content-Disposition'] = content_disposition
     # return response
 
