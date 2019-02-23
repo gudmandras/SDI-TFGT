@@ -1,7 +1,7 @@
 #script to create footprints from .jpg + .jgw files
 #created by Andrew Gudmann(@gudmandras), University of Szeged, Department of Physical Geography and Geoinformatics, 2019.
 
-import os,glob,ntpath,math,osr,pyproj
+import os,glob,ntpath,osr
 import gdal
 from gdal import ogr
 print("Script to create shapefile from .jpg + .jgw files!")
@@ -59,6 +59,8 @@ if(os.path.isdir(filePath) != False):
         rectangle.AddPoint(maxx,maxy)
         maxx, miny = transform.TransformPoint(maxX,minY)[:2]
         rectangle.AddPoint(maxx,miny)
+        minx, miny = transform.TransformPoint(minX,minY)[:2]
+        rectangle.AddPoint(minx,miny)
         polygon.AddGeometry(rectangle)
         feature.SetGeometry(polygon)
 
